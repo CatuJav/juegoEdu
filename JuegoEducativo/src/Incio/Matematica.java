@@ -5,6 +5,12 @@
  */
 package Incio;
 
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -13,12 +19,62 @@ import javax.swing.JOptionPane;
  */
 public class Matematica extends javax.swing.JFrame {
 
+    ArrayList<String> preguntas = new ArrayList<>();
+    ArrayList<String> opciones = new ArrayList<>();
+    ArrayList<Integer> valopciones = new ArrayList<>();
+    int n = 0, con = 0;
+
     /**
      * Creates new form Matematica
      */
     public Matematica() {
-        initComponents();
-        jbtnContinuar.setEnabled(false);
+        initComponents(); cargarListas();
+        Fin.setVisible(false);
+        //jButton1.setVisible(false);
+        txtContador.setText(String.valueOf(con));
+    }
+
+    public void cargarListas() {
+        try {
+            conexion cn = new conexion();
+            Connection cc = cn.conectar();
+            String sql = "select * from preguntas where id_materia_pregunta = 2";
+            java.sql.Statement psd = cc.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            while (rs.next()) {
+                preguntas.add(rs.getString("descripcion_pregunta"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Lenguaje.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+    }
+
+    public void limpiar() {
+        opciones.clear();
+        valopciones.clear();
+    }
+
+    public void preguntar(int posicion) {
+        jlbNpregunt.setText("Pregunta # " + String.valueOf(posicion + 1));
+        txtPregunta.setText(preguntas.get(posicion));
+        int lp = posicion + 1;
+        try {
+            conexion cn = new conexion();
+            Connection cc = cn.conectar();
+            String sql = "select * from opciones where id_pregunta=" + lp;
+            java.sql.Statement psd = cc.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            while (rs.next()) {
+                valopciones.add(rs.getInt("validacion_opcion"));
+                opciones.add(rs.getString("descripcion_opcion"));
+            }
+            jrbResp1.setText(opciones.get(0));
+            jrbResp2.setText(opciones.get(1));
+            jrbResp3.setText(opciones.get(2));
+        } catch (SQLException ex) {
+            Logger.getLogger(Lenguaje.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -30,74 +86,90 @@ public class Matematica extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jlbPuntaje = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        btnRes1 = new javax.swing.JButton();
-        jLabel6 = new javax.swing.JLabel();
-        btnRes3 = new javax.swing.JButton();
-        btnRes2 = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        txtPregunta = new javax.swing.JLabel();
+        jbtnMenuPrinci = new javax.swing.JButton();
         jbtnContinuar = new javax.swing.JButton();
+        jbtnAtras = new javax.swing.JButton();
+        jbtnCerSes = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        jrbResp1 = new javax.swing.JCheckBox();
+        jrbResp2 = new javax.swing.JCheckBox();
+        jrbResp3 = new javax.swing.JCheckBox();
+        txtContador = new javax.swing.JLabel();
+        jlbNpregunt = new javax.swing.JLabel();
+        Fin = new javax.swing.JLabel();
+
+        jLabel1.setText("jLabel1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jlbPuntaje.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
-        jlbPuntaje.setText("0000");
+        jbtnMenuPrinci.setText("Menu Principal");
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        jLabel2.setText("Cuanto es 2+2?");
-
-        btnRes1.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        btnRes1.setText("a) 1");
-        btnRes1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRes1ActionPerformed(evt);
-            }
-        });
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 48)); // NOI18N
-        jLabel6.setText("Puntaje:");
-
-        btnRes3.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        btnRes3.setText("c) 4");
-        btnRes3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRes3ActionPerformed(evt);
-            }
-        });
-
-        btnRes2.setFont(new java.awt.Font("Tahoma", 0, 48)); // NOI18N
-        btnRes2.setText("b) 6");
-        btnRes2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRes2ActionPerformed(evt);
-            }
-        });
-
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jButton1.setText("Volver");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton4.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        jButton4.setText("Salir");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
-
-        jbtnContinuar.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         jbtnContinuar.setText("Continuar");
         jbtnContinuar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnContinuarActionPerformed(evt);
             }
         });
+
+        jbtnAtras.setText("Atras");
+
+        jbtnCerSes.setText("Cerrar Sesión");
+        jbtnCerSes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnCerSesActionPerformed(evt);
+            }
+        });
+
+        jrbResp1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jrbResp1MouseClicked(evt);
+            }
+        });
+        jrbResp1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jrbResp1ActionPerformed(evt);
+            }
+        });
+
+        jrbResp2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jrbResp2MouseClicked(evt);
+            }
+        });
+
+        jrbResp3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jrbResp3MouseClicked(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jrbResp3, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jrbResp2, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jrbResp1, javax.swing.GroupLayout.PREFERRED_SIZE, 591, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(jrbResp1)
+                .addGap(18, 18, 18)
+                .addComponent(jrbResp2)
+                .addGap(18, 18, 18)
+                .addComponent(jrbResp3)
+                .addContainerGap(16, Short.MAX_VALUE))
+        );
+
+        Fin.setText("Fin del juego");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -106,104 +178,132 @@ public class Matematica extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(283, 283, 283)
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 209, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel6)
-                        .addGap(18, 18, 18)))
-                .addComponent(jlbPuntaje)
-                .addGap(51, 51, 51))
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addContainerGap()
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(411, 411, 411)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btnRes2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnRes1)
-                            .addComponent(btnRes3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(38, 38, 38)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtPregunta, javax.swing.GroupLayout.PREFERRED_SIZE, 573, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jbtnCerSes)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jlbNpregunt, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(100, 100, 100)
+                                .addComponent(txtContador, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(193, 193, 193)
-                        .addComponent(jButton1)
-                        .addGap(61, 61, 61)
+                        .addGap(144, 144, 144)
+                        .addComponent(jbtnAtras)
+                        .addGap(63, 63, 63)
                         .addComponent(jbtnContinuar)
-                        .addGap(57, 57, 57)
-                        .addComponent(jButton4)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(59, 59, 59)
+                        .addComponent(jbtnMenuPrinci))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(255, 255, 255)
+                        .addComponent(Fin, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jlbPuntaje)
-                    .addComponent(jLabel6))
-                .addGap(45, 45, 45)
-                .addComponent(jLabel2)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(btnRes1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(txtContador, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(119, 119, 119)
-                        .addComponent(btnRes2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnRes3)
-                        .addGap(66, 66, 66)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jButton1)
-                            .addComponent(jbtnContinuar)
-                            .addComponent(jButton4))
-                        .addGap(0, 90, Short.MAX_VALUE))))
+                        .addGap(0, 22, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jbtnCerSes)
+                                .addGap(5, 5, 5))
+                            .addComponent(jlbNpregunt, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(18, 18, 18)
+                .addComponent(txtPregunta, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbtnContinuar)
+                    .addComponent(jbtnAtras)
+                    .addComponent(jbtnMenuPrinci))
+                .addGap(18, 18, 18)
+                .addComponent(Fin, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnRes2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRes2ActionPerformed
+    private void jrbResp1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jrbResp1ActionPerformed
         // TODO add your handling code here:
-         JOptionPane.showMessageDialog(null, "Respuesta incorrecta");
-        btnRes2.setEnabled(false);
-    }//GEN-LAST:event_btnRes2ActionPerformed
+    }//GEN-LAST:event_jrbResp1ActionPerformed
 
-    private void btnRes1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRes1ActionPerformed
+    private void jbtnCerSesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCerSesActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(null, "Respuesta incorrecta");
-        btnRes1.setEnabled(false);
-    }//GEN-LAST:event_btnRes1ActionPerformed
-
-    private void btnRes3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRes3ActionPerformed
-        // TODO add your handling code here:
-         JOptionPane.showMessageDialog(null, "Respuesta correcta, felicidades");
-         jlbPuntaje.setText("0001");
-         btnRes3.setEnabled(false);
-         jbtnContinuar.setEnabled(true);
-         btnRes1.setEnabled(false);
-         btnRes2.setEnabled(false);
-         btnRes3.setEnabled(false);
-    }//GEN-LAST:event_btnRes3ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        JuegoMenu jm = new JuegoMenu();
-        jm.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
-        System.exit(0);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_jbtnCerSesActionPerformed
 
     private void jbtnContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnContinuarActionPerformed
         // TODO add your handling code here:
-        Pregunta2Matematica p = new Pregunta2Matematica();
-        p.setVisible(true);
-        this.dispose();
-                
+        jrbResp1.setEnabled(true);
+        jrbResp2.setEnabled(true);
+        jrbResp3.setEnabled(true);
+        jrbResp1.setSelected(false);
+        jrbResp2.setSelected(false);
+        jrbResp3.setSelected(false);
+
+        limpiar();
+        n += 1;
+        if (n < preguntas.size()) {
+            preguntar(n);
+        } else {
+            jrbResp1.setEnabled(false);
+            jrbResp2.setEnabled(false);
+            jrbResp3.setEnabled(false);
+            Fin.setText("Fin del juego");
+            Fin.setVisible(true);
+            jbtnContinuar.setVisible(false);
+        }
     }//GEN-LAST:event_jbtnContinuarActionPerformed
+
+    private void jrbResp1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jrbResp1MouseClicked
+        // TODO add your handling code here:
+        if (valopciones.get(0) == 1) {
+            txtContador.setText(String.valueOf(con += 20));
+            jrbResp2.setEnabled(false);
+            jrbResp3.setEnabled(false);
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Respuesta incorrecta, intente de nuevo");
+            jrbResp1.setEnabled(false);
+            jrbResp1.setSelected(false);
+        }
+    }//GEN-LAST:event_jrbResp1MouseClicked
+
+    private void jrbResp2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jrbResp2MouseClicked
+        // TODO add your handling code here:
+        if (valopciones.get(1) == 1) {
+            txtContador.setText(String.valueOf(con += 20));
+            jrbResp1.setEnabled(false);
+            jrbResp3.setEnabled(false);
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Respuesta incorrecta, intente de nuevo");
+            jrbResp2.setEnabled(false);
+            jrbResp2.setSelected(false);
+        }
+    }//GEN-LAST:event_jrbResp2MouseClicked
+
+    private void jrbResp3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jrbResp3MouseClicked
+        // TODO add your handling code here:
+        if (valopciones.get(2) == 1) {
+            txtContador.setText(String.valueOf(con += 20));
+            jrbResp1.setEnabled(false);
+            jrbResp2.setEnabled(false);
+
+        } else {
+            JOptionPane.showMessageDialog(this, "Respuesta incorrecta, intente de nuevo");
+            jrbResp3.setEnabled(false);
+            jrbResp3.setSelected(false);
+        }
+    }//GEN-LAST:event_jrbResp3MouseClicked
 
     /**
      * @param args the command line arguments
@@ -241,14 +341,18 @@ public class Matematica extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnRes1;
-    private javax.swing.JButton btnRes2;
-    private javax.swing.JButton btnRes3;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel Fin;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton jbtnAtras;
+    private javax.swing.JButton jbtnCerSes;
     private javax.swing.JButton jbtnContinuar;
-    private javax.swing.JLabel jlbPuntaje;
+    private javax.swing.JButton jbtnMenuPrinci;
+    private javax.swing.JLabel jlbNpregunt;
+    private javax.swing.JCheckBox jrbResp1;
+    private javax.swing.JCheckBox jrbResp2;
+    private javax.swing.JCheckBox jrbResp3;
+    private javax.swing.JLabel txtContador;
+    private javax.swing.JLabel txtPregunta;
     // End of variables declaration//GEN-END:variables
 }
