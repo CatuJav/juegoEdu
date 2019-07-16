@@ -5,6 +5,8 @@
  */
 package Incio;
 
+import java.awt.Color;
+
 /**
  *
  * @author Nitro5
@@ -16,6 +18,7 @@ public class Ciencias extends javax.swing.JFrame {
      */
     public Ciencias() {
         initComponents();
+        
     }
 
     /**
@@ -27,21 +30,78 @@ public class Ciencias extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        img = new javax.swing.JLabel();
+        txtpregunta = new javax.swing.JLabel();
+        btnc1 = new javax.swing.JButton();
+        btnc2 = new javax.swing.JButton();
+        btnc3 = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setSize(new java.awt.Dimension(1003, 687));
+
+        txtpregunta.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        txtpregunta.setText(" ");
+
+        btnc1.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        btnc1.setText("op1");
+
+        btnc2.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        btnc2.setText("op2");
+        btnc2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnc2ActionPerformed(evt);
+            }
+        });
+
+        btnc3.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        btnc3.setText("op3");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(251, 251, 251)
+                                .addComponent(btnc1)
+                                .addGap(175, 175, 175)
+                                .addComponent(btnc2)
+                                .addGap(185, 185, 185)
+                                .addComponent(btnc3))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(389, 389, 389)
+                                .addComponent(img)))
+                        .addGap(0, 288, Short.MAX_VALUE))
+                    .addComponent(txtpregunta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(64, 64, 64)
+                .addComponent(img)
+                .addGap(31, 31, 31)
+                .addComponent(txtpregunta)
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnc1)
+                    .addComponent(btnc2)
+                    .addComponent(btnc3))
+                .addContainerGap(361, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnc2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnc2ActionPerformed
+
+        // TODO add your handling code here:
+        btnc2.setBackground(Color.GREEN);
+
+    }//GEN-LAST:event_btnc2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -77,7 +137,14 @@ public class Ciencias extends javax.swing.JFrame {
             }
         });
     }
+    
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    public javax.swing.JButton btnc1;
+    public javax.swing.JButton btnc2;
+    public javax.swing.JButton btnc3;
+    public javax.swing.JLabel img;
+    public javax.swing.JLabel txtpregunta;
     // End of variables declaration//GEN-END:variables
 }
