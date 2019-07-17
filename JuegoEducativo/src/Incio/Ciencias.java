@@ -6,6 +6,14 @@
 package Incio;
 
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -16,9 +24,11 @@ public class Ciencias extends javax.swing.JFrame {
     /**
      * Creates new form Ciencias
      */
+    int pre = 1;
+
     public Ciencias() {
         initComponents();
-        
+
     }
 
     /**
@@ -35,6 +45,7 @@ public class Ciencias extends javax.swing.JFrame {
         btnc1 = new javax.swing.JButton();
         btnc2 = new javax.swing.JButton();
         btnc3 = new javax.swing.JButton();
+        btnSiguiente = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setSize(new java.awt.Dimension(1003, 687));
@@ -56,6 +67,14 @@ public class Ciencias extends javax.swing.JFrame {
         btnc3.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
         btnc3.setText("op3");
 
+        btnSiguiente.setFont(new java.awt.Font("Dialog", 1, 36)); // NOI18N
+        btnSiguiente.setText(">>");
+        btnSiguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSiguienteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -65,32 +84,38 @@ public class Ciencias extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(389, 389, 389)
+                                .addComponent(img))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(251, 251, 251)
                                 .addComponent(btnc1)
                                 .addGap(175, 175, 175)
                                 .addComponent(btnc2)
                                 .addGap(185, 185, 185)
-                                .addComponent(btnc3))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(389, 389, 389)
-                                .addComponent(img)))
+                                .addComponent(btnc3)))
                         .addGap(0, 288, Short.MAX_VALUE))
                     .addComponent(txtpregunta, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(512, 512, 512)
+                .addComponent(btnSiguiente)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(64, 64, 64)
                 .addComponent(img)
-                .addGap(31, 31, 31)
-                .addComponent(txtpregunta)
-                .addGap(39, 39, 39)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(txtpregunta, javax.swing.GroupLayout.PREFERRED_SIZE, 223, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnc1)
                     .addComponent(btnc2)
                     .addComponent(btnc3))
-                .addContainerGap(361, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                .addComponent(btnSiguiente)
+                .addGap(145, 145, 145))
         );
 
         pack();
@@ -99,9 +124,14 @@ public class Ciencias extends javax.swing.JFrame {
     private void btnc2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnc2ActionPerformed
 
         // TODO add your handling code here:
-        btnc2.setBackground(Color.GREEN);
+        // btnc2.setBackground(Color.GREEN);
 
     }//GEN-LAST:event_btnc2ActionPerformed
+
+    private void btnSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSiguienteActionPerformed
+        // TODO add your handling code here:
+        cargarCiencias();
+    }//GEN-LAST:event_btnSiguienteActionPerformed
 
     /**
      * @param args the command line arguments
@@ -137,10 +167,73 @@ public class Ciencias extends javax.swing.JFrame {
             }
         });
     }
-    
-  
+    ArrayList pregCien;
+    int iniciopre = 0;
+    ArrayList opcio;
+
+    public void cargarProgreso(String id) {
+        int idusu = Integer.valueOf(id);
+        pregCien = new ArrayList();
+        conexion cc = new conexion();
+        Connection cn = cc.conectar();
+        String sql = "";
+
+        try {
+            sql = "SELECT * FROM preguntas WHERE id_materia_pregunta='4'";
+            Statement psd = cn.createStatement();
+            ResultSet rs = psd.executeQuery(sql);
+            while (rs.next()) {
+                pregCien.add(rs.getString("Id_pregunta") + " " + rs.getString("descripcion_pregunta"));
+            }
+            System.out.println("ento");
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+
+        try {
+            sql = "SELECT * FROM progresomaestro M INNER JOIN detalleprogreo D ON M.id_progreso= D.id_progreso WHERE M.usuario='" + id + "'";
+            Statement psd2 = cn.createStatement();
+            ResultSet rs2 = psd2.executeQuery(sql);
+            rs2.next();
+            int idpre = Integer.valueOf(rs2.getString("total_preguntas"));
+            iniciopre = idpre;//asigna el numero de preguntas
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, ex.getMessage());
+        }
+
+    }
+
+    public void cargarCiencias() {
+        if (iniciopre < (pregCien.size())) {
+            try {
+                //
+                txtpregunta.setText(pregCien.get(iniciopre).toString().substring(2));//carga la pregunta al txt de pregunta
+                String idpre[] = pregCien.get(iniciopre).toString().split(" ");
+                String sql = "SELECT * FROM opciones WHERE id_pregunta='" + idpre[0] + "'";
+                conexion cc = new conexion();
+                Connection cn = cc.conectar();
+                Statement psd = cn.createStatement();
+                ResultSet rs = psd.executeQuery(sql);
+                rs.next();
+                btnc1.setText(rs.getString("descripcion_opcion"));
+                
+                 rs.next();
+                btnc2.setText(rs.getString("descripcion_opcion"));
+                 rs.next();
+                btnc3.setText(rs.getString("descripcion_opcion"));
+                iniciopre = iniciopre + 1;//aumenta a la ihuiente pregunta
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, ex.getMessage());
+            }
+
+        } else {
+            System.out.println("fin");
+        }
+
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSiguiente;
     public javax.swing.JButton btnc1;
     public javax.swing.JButton btnc2;
     public javax.swing.JButton btnc3;
